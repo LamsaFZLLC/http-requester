@@ -12,24 +12,29 @@ namespace Lamsa\RequestHandler\Exception;
 
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * Class RequestHandlerException
  * @package Lamsa\RequestHandler\Exception
  */
-class RequestHandlerException extends Exception
+class RequestHandlerException extends Exception implements HttpExceptionInterface
 {
     /**
      * @var string
      */
-    const MESSAGE = 'an error occurred while calling';
+    const MESSAGE = 'an error occurred while calling ';
 
     /**
-     * UserSubscriptionAlreadyCanceled constructor.
+     * RequestHandlerException constructor.
+     *
+     * @param string $url
+     * @param string $exception
      */
-    public function __construct()
+    public function __construct(string $url,string $exception)
     {
-        parent::__construct(static::MESSAGE);
+        $ex = static::MESSAGE.$url.' Exception : '.$exception;
+        parent::__construct($ex);
     }
 
     /**
@@ -39,7 +44,7 @@ class RequestHandlerException extends Exception
      */
     public function getStatusCode()
     {
-        return Response::HTTP_CONFLICT;
+        return Response::HTTP_BAD_REQUEST;
     }
 
     /**

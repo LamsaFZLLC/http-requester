@@ -12,7 +12,6 @@ namespace Lamsa\RequestHandler\Listener;
 use Exception;
 use Lamsa\RequestHandler\Event\ResponseEvent;
 use Lamsa\RequestHandler\Response;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class JsonResponseListener
@@ -21,6 +20,7 @@ use Psr\Log\LoggerInterface;
 class JsonResponseListener
 {
     /**
+     * convert json string to json
      * @param ResponseEvent $receivedResponse
      * @throws Exception
      */
@@ -34,10 +34,12 @@ class JsonResponseListener
             return;
         }
         $body = $response->getBody();
-        $json = json_decode($body, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new Exception("Invalid JSON: $body");
+        if(!is_object($body)) {
+            $json = json_decode($body, true);
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                throw new Exception("Invalid JSON: $body");
+            }
+            $response->setBody($json);
         }
-        $response->setBody($json);
     }
 }

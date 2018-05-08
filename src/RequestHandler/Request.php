@@ -19,6 +19,7 @@ class Request
      * @var string
      */
     private $method;
+
     /**
      * @var string
      */
@@ -33,6 +34,11 @@ class Request
      * @var array
      */
     private $body;
+
+    /**
+     * @var string
+     */
+    private $returnClassName = null;
 
     /**
      * Request constructor.
@@ -98,5 +104,27 @@ class Request
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnClassName(): ?string
+    {
+        return $this->returnClassName;
+    }
+
+    /**
+     * Class type
+     *
+     * @param string $returnClassName
+     *
+     * @return Request
+     */
+    public function setReturnClassName(string $returnClassName): Request
+    {
+        $this->returnClassName = $returnClassName;
+
+        return $this;
     }
 }
