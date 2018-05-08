@@ -11,6 +11,8 @@ namespace Tests\Lamsa;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use JMS\Serializer\Serializer;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use Lamsa\RequestHandler\Middleware\GuzzleRequestHandler;
 use Lamsa\RequestHandler\Request;
 use Lamsa\RequestHandler\RequestHandler;
@@ -42,6 +44,11 @@ class RequestHandlerTest extends TestCase
     private $eventDispatcherMock;
 
     /**
+     * @var Serializer $serializer
+     */
+    private $serializer;
+
+    /**
      * @inheritDoc
      */
     protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
@@ -49,7 +56,8 @@ class RequestHandlerTest extends TestCase
         $this->loggerMock           = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $this->eventDispatcherMock  = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $this->guzzle               = new Client();
-        $this->guzzleRequestHandler = new GuzzleRequestHandler(new Client());
+        $this->serializer           = $this->getMockBuilder(Serializer::class)->disableOriginalConstructor()->getMock();
+        $this->guzzleRequestHandler = new GuzzleRequestHandler(new Client(),$this->serializer);
     }
 
     /**

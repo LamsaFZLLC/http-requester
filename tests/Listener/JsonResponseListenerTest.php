@@ -19,22 +19,13 @@ use Psr\Log\LoggerInterface;
 
 class JsonResponseListenerTest extends TestCase
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $loggerMock;
-
-    protected function setUp()
-    {
-        $this->loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-    }
 
     /**
      * @throws \Exception
      */
     public function testOnReceivedResponse() {
 
-        $jsonResponseListener = new JsonResponseListener($this->loggerMock);
+        $jsonResponseListener = new JsonResponseListener();
 
         $response = new Response(200);
         $response->setHeaders(array('Content-Type' =>['application/json','utf-8']));
