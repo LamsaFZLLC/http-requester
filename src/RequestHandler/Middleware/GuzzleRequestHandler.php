@@ -86,7 +86,11 @@ class GuzzleRequestHandler implements RequestHandlerInterface
      */
     private function getRequestOptions($header = [],$body = '') {
 
-        return array('headers' => $header, 'body' => $body);
+        $data = 'body';
+        if(is_array($body)) {
+            $data = 'form_params';
+        }
+        return array('headers' => $header, $data => $body);
     }
 
     /**

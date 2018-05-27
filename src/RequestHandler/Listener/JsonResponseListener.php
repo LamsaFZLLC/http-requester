@@ -34,7 +34,7 @@ class JsonResponseListener
             return;
         }
         $body = $response->getBody();
-        if(!is_object($body)) {
+        if(!empty($body) && !is_object($body)) {
             $json = json_decode($body, true);
             if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new Exception("Invalid JSON: $body");
