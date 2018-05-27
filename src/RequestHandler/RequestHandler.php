@@ -32,21 +32,14 @@ class RequestHandler implements RequestHandlerInterface
     private $requestHandler;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * RequestHandler constructor.
      * @param EventDispatcherInterface $eventDispatcher
      * @param RequestHandlerInterface $requestHandler
-     * @param LoggerInterface $logger
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RequestHandlerInterface $requestHandler, LoggerInterface $logger)
+    public function __construct(EventDispatcherInterface $eventDispatcher, RequestHandlerInterface $requestHandler)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->requestHandler = $requestHandler;
-        $this->logger = $logger;
     }
 
     /**

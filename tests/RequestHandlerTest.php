@@ -29,11 +29,6 @@ class RequestHandlerTest extends TestCase
     private $guzzle;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $loggerMock;
-
-    /**
      * @var RequestHandlerInterface
      */
     private $guzzleRequestHandler;
@@ -53,7 +48,6 @@ class RequestHandlerTest extends TestCase
      */
     protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
-        $this->loggerMock           = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $this->eventDispatcherMock  = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $this->guzzle               = new Client();
         $this->serializer           = $this->getMockBuilder(Serializer::class)->disableOriginalConstructor()->getMock();
@@ -69,7 +63,7 @@ class RequestHandlerTest extends TestCase
         $request->setHeader('Content-Type','application/json');
 //        $request->setBody("dsdsds");
 
-        $requestHandler = new RequestHandler($this->eventDispatcherMock,$this->guzzleRequestHandler,$this->loggerMock);
+        $requestHandler = new RequestHandler($this->eventDispatcherMock,$this->guzzleRequestHandler);
         $response = $requestHandler->handle($request);
         $this->assertEquals(200,$response->getStatusCode());
         $this->assertNotEmpty($response->getBody());
