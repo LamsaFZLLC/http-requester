@@ -64,7 +64,7 @@ class Response
      * @param $name
      * @return array
      */
-    public function getHeader($name): array
+    public function getHeader($name): ?array
     {
         return (isset($this->headers[$name]) ? $this->headers[$name] : null);
     }
