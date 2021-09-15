@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": ">=7.1",
-        "symfony/symfony": "3.4.*",
+        "symfony/symfony": "5.3.7",
         "guzzlehttp/guzzle": "^6.3",
-        "jms/serializer-bundle": "^2.0"
+        "jms/serializer-bundle": "^3.10"
     },
     "autoload": {
         "psr-4": {
