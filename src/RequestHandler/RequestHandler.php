@@ -7,11 +7,11 @@
  * @author    Abdelhameed Alasbahi <abdkwa92@gmail.com>
  * @copyright Copyright (c) 2018 LamsaWorld (http://www.lamsaworld.com/)
  */
+
 namespace Lamsa\RequestHandler;
 
 use Lamsa\RequestHandler\Event\ResponseEvent;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RequestHandler
@@ -33,23 +33,26 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * RequestHandler constructor.
+     *
      * @param EventDispatcherInterface $eventDispatcher
-     * @param RequestHandlerInterface $requestHandler
+     * @param RequestHandlerInterface  $requestHandler
      */
     public function __construct(EventDispatcherInterface $eventDispatcher, RequestHandlerInterface $requestHandler)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->requestHandler = $requestHandler;
+        $this->requestHandler  = $requestHandler;
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function handle(Request $request): Response
     {
         $response = $this->requestHandler->handle($request);
-        $this->eventDispatcher->dispatch(RequestHandler::EVENT_NAME, new ResponseEvent($response));
+        $this->eventDispatcher->dispatch(new ResponseEvent($response), RequestHandler::EVENT_NAME);
+
         return $response;
     }
 }

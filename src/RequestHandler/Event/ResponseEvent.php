@@ -12,7 +12,7 @@ namespace Lamsa\RequestHandler\Event;
 
 
 use Lamsa\RequestHandler\Response;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ResponseEvent
@@ -27,6 +27,7 @@ class ResponseEvent extends Event
 
     /**
      * ResponseEvent constructor.
+     *
      * @param Response $response
      */
     public function __construct(Response $response)
