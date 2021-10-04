@@ -51,3 +51,7 @@
 Vagrantfile
 docker.sh
 .web-server-pid
+
+###> phpunit/phpunit ###
+.phpunit.result.cache
+###< phpunit/phpunit ###
