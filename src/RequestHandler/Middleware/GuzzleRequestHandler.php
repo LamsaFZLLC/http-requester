@@ -7,17 +7,18 @@
  * @author    Abdelhameed Alasbahi <abdkwa92@gmail.com>
  * @copyright Copyright (c) 2018 LamsaWorld (http://www.lamsaworld.com/)
  */
+
 namespace Lamsa\RequestHandler\Middleware;
 
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use Lamsa\RequestHandler\Exception\RequestHandlerException;
 use Lamsa\RequestHandler\Request;
 use Lamsa\RequestHandler\RequestHandlerInterface;
 use Lamsa\RequestHandler\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-
 
 
 /**
@@ -32,7 +33,7 @@ class GuzzleRequestHandler implements RequestHandlerInterface
     private $client;
 
     /**
-     * @var Serializer $serializer
+     * @var SerializerInterface $serializer
      */
     private $serializer;
 
@@ -40,11 +41,11 @@ class GuzzleRequestHandler implements RequestHandlerInterface
      * GuzzleRequestHandler constructor.
      *
      * @param ClientInterface $client
-     * @param Serializer $serializer
+     * @param Serializer      $serializer
      */
-    public function __construct(ClientInterface $client,Serializer $serializer)
+    public function __construct(ClientInterface $client, SerializerInterface $serializer)
     {
-        $this->client = $client;
+        $this->client     = $client;
         $this->serializer = $serializer;
     }
 
@@ -62,55 +63,56 @@ class GuzzleRequestHandler implements RequestHandlerInterface
         $header = $request->getHeaders();
         $body   = $request->getBody();
 
-        if($method !== 'get' && $method !== 'delete') {
-            if(is_object($body)) {
-                $body = $this->serializer->serialize($body,'json');
+        if ($method !== 'get' && $method !== 'delete') {
+            if (is_object($body)) {
+                $body = $this->serializer->serialize($body, 'json');
             }
         }
-        $options = $this->getRequestOptions($header,$body);
-        try{
-            $guzzleResponse = $this->client->request($method,$uri,$options);
-        }catch (GuzzleException $e){
-            throw new RequestHandlerException($uri,$e->getMessage());
+        $options = $this->getRequestOptions($header, $body);
+        try {
+            $guzzleResponse = $this->client->request($method, $uri, $options);
+        } catch (GuzzleException $e) {
+            throw new RequestHandlerException($uri, $e->getMessage());
         }
 
-        $response = $this->convertGuzzleResponse($guzzleResponse,$request);
-        return $response;
+        return $this->convertGuzzleResponse($guzzleResponse, $request);
     }
 
     /**
-     * @param array $header
-     * @param string $body
+     * @param array       $header
+     * @param string|null $body
      *
      * @return array
      */
-    private function getRequestOptions($header = [],$body = '') {
-
+    private function getRequestOptions(array $header = [], ?string $body = ''): array
+    {
         $data = 'body';
-        if(is_array($body)) {
+        if (is_array($body)) {
             $data = 'form_params';
         }
+
         return array('headers' => $header, $data => $body);
     }
 
     /**
      * @param ResponseInterface $guzzleResponse
      *
-     * @param Request $request
+     * @param Request           $request
+     *
      * @return Response
      */
-    public function convertGuzzleResponse(ResponseInterface $guzzleResponse,Request $request) :Response
+    public function convertGuzzleResponse(ResponseInterface $guzzleResponse, Request $request): Response
     {
         $response = new Response($guzzleResponse->getStatusCode());
 
-        if($this->isSuccessful($response)) {
+        if ($this->isSuccessful($response)) {
 
             $responseBodyType = $request->getReturnClassName();
-            $body = $guzzleResponse->getBody()->__toString();
+            $body             = $guzzleResponse->getBody()->__toString();
 
             //if class type is defined then mapping to that class will take a place
-            if($responseBodyType) {
-                $body = $this->serializer->deserialize($body,$responseBodyType,'json');
+            if ($responseBodyType) {
+                $body = $this->serializer->deserialize($body, $responseBodyType, 'json');
             }
             $response
                 ->setHeaders($guzzleResponse->getHeaders())

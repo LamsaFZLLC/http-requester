@@ -1,6 +1,6 @@
 <?php
 /**
- * http-requester - GuzzleRequestHandlerTthp
+ * http-requester - GuzzleRequestHandlerTest
  *
  * Date: 4/24/18
  * Time: 4:17 PM
@@ -9,12 +9,16 @@
  */
 
 namespace Tests\Lamsa\Middleware;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
+use Lamsa\RequestHandler\Exception\RequestHandlerException;
 use Lamsa\RequestHandler\Middleware\GuzzleRequestHandler;
 use Lamsa\RequestHandler\Request;
 use PHPUnit\Framework\TestCase;
+
 /**
  * Class GuzzleRequestHandlerTest
  */
@@ -33,27 +37,24 @@ class GuzzleRequestHandlerTest extends TestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp(): void
     {
-        $this->guzzle = new Client();
-        $this->serializer = $this->getMockBuilder(Serializer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->guzzle     = new Client();
+        $this->serializer = $this->createMock(SerializerInterface::class);
     }
 
 
     /**
-     * @throws \Lamsa\RequestHandler\Exception\RequestHandlerException
+     * @throws RequestHandlerException
      */
     public function testHandleRequest()
     {
 
         $request = new Request('get', "http://ip-api.com/json/");
         $request->setHeader('Content-Type', 'application/json');
-//        $request->setBody("k");
 
-        $guzzleRequestHandler = new GuzzleRequestHandler($this->guzzle,$this->serializer);
-        $response = $guzzleRequestHandler->handle($request);
+        $guzzleRequestHandler = new GuzzleRequestHandler($this->guzzle, $this->serializer);
+        $response             = $guzzleRequestHandler->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEmpty($response->getBody());
     }

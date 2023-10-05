@@ -11,17 +11,17 @@
 namespace Tests\Lamsa\Listener;
 
 
+use Exception;
 use Lamsa\RequestHandler\Event\ResponseEvent;
 use Lamsa\RequestHandler\Listener\JsonResponseListener;
 use Lamsa\RequestHandler\Response;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class JsonResponseListenerTest extends TestCase
 {
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testOnReceivedResponse() {
 

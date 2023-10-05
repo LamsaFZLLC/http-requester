@@ -42,7 +42,7 @@ class RequestHandlerException extends Exception implements HttpExceptionInterfac
      *
      * @return int An HTTP response status code
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return Response::HTTP_BAD_REQUEST;
     }
@@ -52,7 +52,7 @@ class RequestHandlerException extends Exception implements HttpExceptionInterfac
      *
      * @return array Response headers
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return [];
     }

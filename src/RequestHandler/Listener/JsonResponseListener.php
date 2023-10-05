@@ -11,7 +11,6 @@ namespace Lamsa\RequestHandler\Listener;
 
 use Exception;
 use Lamsa\RequestHandler\Event\ResponseEvent;
-use Lamsa\RequestHandler\Response;
 
 /**
  * Class JsonResponseListener
@@ -26,7 +25,6 @@ class JsonResponseListener
      */
     public function onReceivedResponse(ResponseEvent $receivedResponse)
     {
-        /*** @var Response $response */
         $response = $receivedResponse->getResponse();
 
         $contentType = $response->getHeader('Content-Type');

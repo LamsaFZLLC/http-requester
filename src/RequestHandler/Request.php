@@ -31,7 +31,7 @@ class Request
     private $headers = array();
 
     /**
-     * @var array
+     * @var mixed
      */
     private $body;
 
@@ -54,7 +54,7 @@ class Request
     /**
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -62,7 +62,7 @@ class Request
     /**
      * @return string
      */
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }
@@ -82,20 +82,9 @@ class Request
     /**
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
-    }
-
-    /**
-     * @param $body
-     * @return Request
-     */
-    public function setBody($body): Request
-    {
-        $this->body = $body;
-
-        return $this;
     }
 
     /**
@@ -114,17 +103,4 @@ class Request
         return $this->returnClassName;
     }
 
-    /**
-     * Class type
-     *
-     * @param string $returnClassName
-     *
-     * @return Request
-     */
-    public function setReturnClassName(string $returnClassName): Request
-    {
-        $this->returnClassName = $returnClassName;
-
-        return $this;
-    }
 }
